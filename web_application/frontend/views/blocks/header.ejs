@@ -1,0 +1,47 @@
+<!-- Шапка сайту - дозволяє переходити між сторінками -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-2 border-primary">
+
+   <!-- Блок-контейнер на всю ширину екрану -->
+   <div class="container-fluid">
+
+      <!-- Логотип сайту -->
+      <div class="navbar-brand d-flex fs-3 text-primary align-items-center">
+         <img src="/web_application/frontend/img/cat.png" height="50" width="50" class="img-fluid">
+         <a class="ms-2 text-decoration-none text-start lh-1" href="/">Pet <br class="d-block d-sm-none"> Health</a>
+      </div>
+
+      <!-- Кнопка для згортання/розгортання вмісту шапки -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Блок, який містить елементи шапки -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+
+         <!-- Ненумерований список елементів -->
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+
+            <!-- Лікарні -->
+            <li class="nav-item">
+               <a class="<%= page_id === '1' ? "nav-link active" : "nav-link" %>" href="/hospitals">Ветеринарні клініки</a>
+            </li>
+
+            <!-- Лікарі -->
+            <li class="nav-item">
+               <a class="<%= page_id === '2' ? "nav-link active" : "nav-link" %>" href="/doctors">Ветеринари</a>
+            </li>
+
+            <!-- Пацієнти -->
+            <li class="nav-item">
+               <a class="<%= page_id === '3' ? "nav-link active" : "nav-link" %>" href="/patients">Пацієнти</a>
+            </li>
+
+            <!-- Виписані пацієнти -->
+            <li class="nav-item">
+               <a class="<%= page_id === '4' ? "nav-link active" : "nav-link" %>" href="/cured_patients">Виписані пацієнти</a>
+            </li>
+         </ul>
+      </div>
+   </div>
+</nav>
