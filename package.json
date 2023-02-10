@@ -28,5 +28,9 @@
     "type": "git",
     "url": "https://github.com/AndriiMorozPM/ServerWeb"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express-openid-connect": "^2.12.0"
+  }
 }

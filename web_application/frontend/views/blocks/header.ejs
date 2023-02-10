@@ -20,7 +20,7 @@
       <div class="collapse navbar-collapse" id="navbarContent">
 
          <!-- Ненумерований список елементів -->
-         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+         <ul class="navbar-nav mb-2 mb-lg-0 fs-5">
 
             <!-- Лікарні -->
             <li class="nav-item">
@@ -41,6 +41,28 @@
             <li class="nav-item">
                <a class="<%= page_id === '4' ? "nav-link active" : "nav-link" %>" href="/cured_patients">Виписані пацієнти</a>
             </li>
+
+         </ul>
+         
+      </div>
+   </div>
+   <div class="navbar-brand d-flex fs-3 text-primary align-items-center">
+      <form class="form-inline mr-sm-2 me-2">
+         <button type="button" class="btn btn-dark btn-block" id="logoutbutton" onclick="logout()" ><%= exitbutton %></button>
+         
+      </form>
+      <form class="form-inline mr-sm-2">
+      </form>
+      <div class="btn-group">
+         <button class="btn btn-dark" type="button"  aria-expanded="false" onclick="login()"><i class="bi bi-person-circle fs-5" aria-hidden="true"></i><%= enterbutton %></button>
+         <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only"></span>
+         </button>
+         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end dropdown-toggle-split" aria-labelledby="dropdownMenuButton2">
+           <li><a class="dropdown-item" href="#"><%= namemail %></a></li>
+           <li><a class="dropdown-item" href="#"><%= mail %></a></li>
+           <li><hr class="dropdown-divider"></li>
+           <li><a class="dropdown-item" href="#"><%= updated %></a></li>
          </ul>
       </div>
    </div>

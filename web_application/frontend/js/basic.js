@@ -3,34 +3,45 @@ let search = "";
 let divider = `<li><hr class="dropdown-divider"></li>`;
 
 // Створення нового елемента
+function get_auth()
+   { return $("head").attr("authentic"); }
+
 async function create_element() {
+   let auth = get_auth();
+   if(auth == true)
+   {
+      let target = location.pathname.substring(1);
+      target = target.substring(0, target.length - 1);
 
-   let target = location.pathname.substring(1);
-   target = target.substring(0, target.length - 1);
+      if (target === "cured_patient") {
+         modal_delete_cured_patients();
+         return;
+      }
 
-   if (target === "cured_patient") {
-      modal_delete_cured_patients();
-      return;
+      switch (target) {
+
+         case "hospital": $("#hospital_title").text("Додавання нової лікарні");
+                        $("#hospital_yes").text("Додати");
+                        break;
+         case "doctor":   $("#doctor_title").text("Додавання нового лікаря");
+                        $("#doctor_yes").text("Додати");
+                        prepare_hospitals_for_dropdown(target);
+                        break;
+         case "patient":  $("#patient_title").text("Додавання нового пацієнта");
+                        $("#patient_yes").text("Додати");
+                        prepare_hospitals_for_dropdown(target);
+                        break;
+
+      }
+
+      $(`#${target}_yes`).attr("onclick", `modal_update_${target}s(true)`);
+      $(`#modal_${target}s`).modal('show');
    }
-
-   switch (target) {
-
-      case "hospital": $("#hospital_title").text("Додавання нової лікарні");
-                       $("#hospital_yes").text("Додати");
-                       break;
-      case "doctor":   $("#doctor_title").text("Додавання нового лікаря");
-                       $("#doctor_yes").text("Додати");
-                       prepare_hospitals_for_dropdown(target);
-                       break;
-      case "patient":  $("#patient_title").text("Додавання нового пацієнта");
-                       $("#patient_yes").text("Додати");
-                       prepare_hospitals_for_dropdown(target);
-                       break;
-
+   else
+   {
+      alert('Потрібен вхід для цієї дії!');
    }
-
-   $(`#${target}_yes`).attr("onclick", `modal_update_${target}s(true)`);
-   $(`#modal_${target}s`).modal('show');
+   
 
 }
 
@@ -38,42 +49,48 @@ async function create_element() {
 
 // Редагування існуючого елемента
 async function edit_element (element) {
+   let auth = get_auth();
+   if(auth == true)
+   {
+      let item;
+      let target = location.pathname.substring(1);
+      target = target.substring(0, target.length - 1);
 
-   let item;
-   let target = location.pathname.substring(1);
-   target = target.substring(0, target.length - 1);
+      let id = parseInt($(element).closest("tr").children().first().text());
 
-   let id = parseInt($(element).closest("tr").children().first().text());
+      $(`#${target}_title`).text("Редагування даних");
+      $(`#${target}_yes`).text("Оновити дані");
 
-   $(`#${target}_title`).text("Редагування даних");
-   $(`#${target}_yes`).text("Оновити дані");
+      switch (target) {
 
-   switch (target) {
+         case "hospital": item = get_hospital_by_id(id);
+                        $("#hospital_name").val(item.name);
+                        $("#hospital_address").val(item.address);
+                        break;
+         case "doctor":   item = get_doctor_by_id(id);
+                        $("#doctor_age").val(item.age);
+                        $("#doctor_name").val(item.name);
+                        $("#doctor_hospital").text(item.hospital);
+                        prepare_hospitals_for_dropdown(target);
+                        break;
+         case "patient":  item = get_patient_by_id(id);
+                        $("#patient_master").val(item.master);
+                        $("#patient_name").val(item.name);
+                        $("#patient_age").val(item.age);
+                        $("#patient_doctor").text(item.doctor);
+                        $("#patient_hospital").text(item.hospital);
+                        prepare_hospitals_for_dropdown(target);
+                        break;
 
-      case "hospital": item = get_hospital_by_id(id);
-                       $("#hospital_name").val(item.name);
-                       $("#hospital_address").val(item.address);
-                       break;
-      case "doctor":   item = get_doctor_by_id(id);
-                       $("#doctor_age").val(item.age);
-                       $("#doctor_name").val(item.name);
-                       $("#doctor_hospital").text(item.hospital);
-                       prepare_hospitals_for_dropdown(target);
-                       break;
-      case "patient":  item = get_patient_by_id(id);
-                       $("#patient_master").val(item.master);
-                       $("#patient_name").val(item.name);
-                       $("#patient_age").val(item.age);
-                       $("#patient_doctor").text(item.doctor);
-                       $("#patient_hospital").text(item.hospital);
-                       prepare_hospitals_for_dropdown(target);
-                       break;
+      }
 
+      $(`#${target}_yes`).attr("onclick", `modal_update_${target}s(false, ${id})`);
+      $(`#modal_${target}s`).modal('show');
    }
-
-   $(`#${target}_yes`).attr("onclick", `modal_update_${target}s(false, ${id})`);
-   $(`#modal_${target}s`).modal('show');
-
+   else
+   {
+      alert('Потрібен вхід для цієї дії!');
+   }
 }
 
 // ...............................................................................................
@@ -102,44 +119,50 @@ function find_element (element) {
 
 // Видалення існуючого елемента
 function delete_element (item) {
+   let auth = get_auth();
+   if(auth == true)
+   {
+      let button;
+      let message;
+      let target = location.pathname.substring(1);
+      let id = parseInt($(item).closest("tr").children().first().text());
 
-   let button;
-   let message;
-   let target = location.pathname.substring(1);
-   let id = parseInt($(item).closest("tr").children().first().text());
+      switch (target) {
 
-   switch (target) {
+         case "hospitals":
+            message = "Ви дійсно хочете видалити інформацію про цю лікарню";
+            button = "Видалити";
+            break;
 
-      case "hospitals":
-         message = "Ви дійсно хочете видалити інформацію про цю лікарню";
-         button = "Видалити";
-         break;
+         case "doctors":
+            message = "Ви дійсно хочете звільнити цього лікаря";
+            button = "Звільнити";
+            break;
 
-      case "doctors":
-         message = "Ви дійсно хочете звільнити цього лікаря";
-         button = "Звільнити";
-         break;
+         case "patients":
+            message = "Ви дійсно хочете виписати цю тварину";
+            button = "Виписати";
+            break;
 
-      case "patients":
-         message = "Ви дійсно хочете виписати цю тварину";
-         button = "Виписати";
-         break;
+         case "cured_patients":
+            message = "Ви дійсно хочете видалити інформацію про цього виписаного пацієнта";
+            button = "Видалити";
+            break;
 
-      case "cured_patients":
-         message = "Ви дійсно хочете видалити інформацію про цього виписаного пацієнта";
-         button = "Видалити";
-         break;
+      }
+      
+      modal_confirm_create("Повідомлення",
+                           `${message}?`,
+                           `${button}`,
+                           "Відміна",
+                           "delete", id);
 
+      $(`#modal_confirm`).modal('show');
    }
-   
-   modal_confirm_create("Повідомлення",
-                        `${message}?`,
-                        `${button}`,
-                        "Відміна",
-                        "delete", id);
-
-   $(`#modal_confirm`).modal('show');
-
+   else
+   {
+      alert('Потрібен вхід для цієї дії!');
+   }
 }
 
 // ...............................................................................................
